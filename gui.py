@@ -52,6 +52,14 @@ def run():
     
 def run_calib():
     import grayscale as gry
+    
+    try:
+        path_img_bg = path_img_bg
+        
+    except NameError:
+        path_img_bg = 1
+    
+        
     gry.main(path_img_calib,folder_calib,path_img_bg)
     
 def type_image():

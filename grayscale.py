@@ -27,7 +27,7 @@ def main(ic_file,path_ic,path_bg):
     x = np.arange(len(img[0]))
     y = np.arange(len(img))
 
-    if path_bg != '':
+    if path_bg != 1:
         img_back = cv2.imread(path_bg, cv2.IMREAD_GRAYSCALE)       
         img = img - img_back
     
