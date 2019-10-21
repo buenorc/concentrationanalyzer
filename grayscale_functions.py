@@ -46,9 +46,13 @@ def concentration(minval,maxval,value): # interpolação linear
     return y
 
 
-def shots(num_scene,path_image, minval,maxval,pathin,pathout):
+def shots(num_scene,path_image, minval,maxval,pathout,background_button,ground):
  
     img = cv2.imread(path_image, cv2.IMREAD_GRAYSCALE)
+
+    if background_button == 1:
+        img = ground - img
+
 
     numrows = len(img)    
     numcols = len(img[0])
@@ -58,6 +62,7 @@ def shots(num_scene,path_image, minval,maxval,pathin,pathout):
 
     x = np.arange(numrows)  
     y = np.arange(numcols)  
+    
 
     for i in range(numrows):
         for j in range(numcols):
@@ -91,4 +96,5 @@ def plot(x,y,plume,num_scene,pathout):
     
     plt.gca().set_aspect('equal', adjustable='box')
     plt.savefig(pathout+'/plot'+str(num_scene)+'.png',dpi=800)
+    plt.close()
      

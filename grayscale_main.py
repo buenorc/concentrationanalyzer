@@ -5,6 +5,7 @@ Rafael de Carvalho Bueno (rafael.bueno@ufpr.br)
 '''
 import os 
 import sys
+import cv2
 from tkinter import *
 import grayscale_functions as gray
 
@@ -19,7 +20,7 @@ class StdoutRedirector(object):
         self.text_area.see(END)
 
 
-def main(mode,minval,maxval,path_results,path_video,dt,path_frame,num_scene):
+def main(mode,minval,maxval,path_results,path_video,dt,path_frame,num_scene,background_button):
 
     old_stdout = sys.stdout
     
@@ -43,9 +44,9 @@ def main(mode,minval,maxval,path_results,path_video,dt,path_frame,num_scene):
     dt = dt.get()
     minval = int(minval.get())
     maxval = int(maxval.get())
-    
+
     if(mode == 1):
-        
+         
         print ("> ")
         root.update()
         print ("> Frames are being extracted from video...")
@@ -53,7 +54,12 @@ def main(mode,minval,maxval,path_results,path_video,dt,path_frame,num_scene):
         
         num_scene = gray.vidtoframes(path_video,dt)  
         num_scene  = int(num_scene)
-
+        
+        if background_button == 1:
+            ground = cv2.imread('0.png', cv2.IMREAD_GRAYSCALE)
+        else:
+            ground = None
+        
         print ("> Frames were extracted from video ")
         root.update()
         print ("> ")
@@ -62,19 +68,29 @@ def main(mode,minval,maxval,path_results,path_video,dt,path_frame,num_scene):
         root.update()   
         print ("> This process may take awhile...")
         root.update() 
+
         for i in range(num_scene):
             print('>       Processing image '+str(i))
             path_image = str(i)+'.png'
-            plume = gray.shots(i,str(path_image),minval,maxval,path_image,path_results)
-            os.remove(str(i)+'.png')
+            plume = gray.shots(i,str(path_image),minval,maxval,path_results,background_button,ground)
+        
+            #os.remove(str(i)+'.png')
+            
+            
     elif (mode == 2):
 
         num_scene  = int(num_scene)
         
+        if background_button == 1:
+            ground = cv2.imread(path_frames+'0.png', cv2.IMREAD_GRAYSCALE)
+        else:
+            ground = None
+        
         for i in range(num_scene):
             print('>       Processing image '+str(i))
             path_image = path_frames+str(i)+'.png'
-            plume = gray.shots(i,str(path_image),minval,maxval,path_image,path_results)
+            
+            plume = gray.shots(i,str(path_image),minval,maxval,path_results,background_button,ground)
 
 
     root.update()  
